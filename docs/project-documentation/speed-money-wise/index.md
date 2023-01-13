@@ -96,6 +96,7 @@ The state management solution we will be using is [Zustand](https://docs.pmnd.rs
 !!! note "A helpful Zustand tutorial is [here](https://www.youtube.com/watch?v=KCr-UNsM3vA)."
 
 ### The Backend
+[[api|API Documentation]] 
 
 #### Authentication
 
