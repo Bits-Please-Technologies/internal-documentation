@@ -34,7 +34,6 @@ An example of what the data parameter object looks like before it has been parse
   },
   "filter": {
     "status": "pending",
-    "createdAt": "",
     "dateRange": {
       "field": "createdAt",
       "startDate": "2023-01-11T14:12:07.510Z",
@@ -42,8 +41,7 @@ An example of what the data parameter object looks like before it has been parse
     },
     "sender": {
       "firstName": "John",
-      "lastName": "Doe",
-      "occupation": "Developeree"
+      "lastName": "Doe"
     },
     "receiver": {
       "firstName": "Johnny",
