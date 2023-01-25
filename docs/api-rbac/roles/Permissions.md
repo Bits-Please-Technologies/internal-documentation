@@ -78,3 +78,30 @@ The response object will then return the count of how many roles it has inserted
 }
 
 ```
+
+
+# Permissions
+
+The user permissions is located in the JWT. as seen below
+
+```json
+{
+  "user": {
+    "id": 2,
+    "firstName": "test",
+    "lastName": "test",
+    "email": "test@test.com",
+    "role": {
+      "name": "admin",
+      "permissions": [
+        "delete:user",
+        "update:user",
+        "read:transaction",
+        "create:role"
+      ]
+    }
+  },
+  "iat": 1674659861,
+  "exp": 1674660761
+}
+```
