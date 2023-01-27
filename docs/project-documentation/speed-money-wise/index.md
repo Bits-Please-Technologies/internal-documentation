@@ -10,7 +10,7 @@ The solution we shall provide is a web portal that allows the company to efficie
 
 Next to those core functionalities, the system will also have settings that allow the administrator **(superuser)** to input supporting data for the transaction creation process and to manage the access control of the users in the system.
 
-![Figure 1: High-Level Overview Of Process Flow](/images/projects/speed-money-wise/Speed_Money_Wise_Flow.png)
+![Figure 1: High-Level Overview Of Process Flow](../../images/projects/speed-money-wise/Speed_Money_Wise_Flow.png)
 
 Figure 1: High-Level Overview Of Process Flow
 
@@ -18,7 +18,7 @@ Figure 1: High-Level Overview Of Process Flow
 
 The infrastructure of this project is split into 2 parts, the frontend, and the backend.
 
-![Figure 2: High-Level Overview Of Project Infrastructure.](/images/projects/speed-money-wise/Speed_Money_Wise_Infra.png)
+![Figure 2: High-Level Overview Of Project Infrastructure.](../../images/projects/speed-money-wise/Speed_Money_Wise_Infra.jpg)
 
 Figure 2: High-Level Overview Of Project Infrastructure.
 
@@ -34,11 +34,13 @@ The authentication system we will implement is a combination of access tokens an
 
 The access token will expire in a short amount of time which will cause the client to request a new token with the refresh token.
 
-![Figure 3:  Authentication Process](/images/projects/speed-money-wise/Token_Authentication_Flow.png)
+![Figure 3:  Authentication Process](../../images/projects/speed-money-wise/Token_Authentication_Flow.png)
 
 Figure 3: Authentication Process
 
 #### Authorization
+
+!!! note "There is a [usePermission hook example](https://gist.github.com/N3RDCLASH/576d92a71d605b824b5ebbb4527bad09)"
 
 #### User Interface
 
@@ -64,13 +66,11 @@ The sidebar component will be the main navigation component for this portal.
 
 The requirements for this component are:
 
-- The componten should accept items prop in which a config array can be passed.
+- The component should accept items prop in which a config array can be passed.
 - The sidebar will generate its sidebar item based on the objects in the array.
 - The sidebar will use a permissions hook to determine if the user has the permissions to visit that route and will render based on that condition.
 
 ###### Client Form
-
-!!! note "when adding a custom fee the selected fee_id should be null in the transactions body"
 
 The client form will be used to register client information. The form will be used 3 times in the application:
 
@@ -91,11 +91,78 @@ The table can be used to display various amounts of information. For the table c
 
 #### State Management
 
-The state management solution we will be using is [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction). Zustand is very simple and straightforward state management solution.
+!!! note "Check out a helpful Zustand tutorial [here](https://www.youtube.com/watch?v=KCr-UNsM3vA)."
 
-!!! note "A helpful Zustand tutorial is [here](https://www.youtube.com/watch?v=KCr-UNsM3vA)."
+The state management solution we will be using is [`zustand`](https://docs.pmnd.rs/zustand/getting-started/introduction). Zustand is very simple and straightforward state management solution.
+
+#### Data Fetching
+
+Our data fetching stack will consist out of two libraries [`axios`](https://www.npmjs.com/package/axios) and [`react-query`](https://www.npmjs.com/package/react-query). `axios` is a http client that simplifies the concept of making http requests.`react-query` is a set of custom hooks that makes fetching, caching, and updating asynchronous or server state in React easy.
+
+An example of how these two libraries will work together in our project.
+
+`axios` is being used to get data from the `jsonplaceholder` API.
+
+file: `src/services/post.service.ts`
+
+```ts
+import axios from "axios";
+
+export const getPosts = async () => {
+  const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
+  return res.data;
+};
+```
+
+file: `src/app/query-example/page.tsx`
+
+`react-query` is used to implement gather the data and the request completion status easily.
+
+For more information check out the `react-query` [documentation](https://react-query-v3.tanstack.com/)
+
+```ts
+'use client';
+
+import { getPosts } from "@services/example.service"
+import { useQuery } from "react-query"
+import ClockLoader from "react-spinners/ClockLoader";
+
+const TestPage = () => {
+    const { data: posts, isLoading } = useQuery<IPost[]>("posts", getPosts)
+
+    return <div className="flex flex-col gap-4 items-center justify-center">
+        <h1 className="text-2xl">React Query Example</h1>
+        {
+            <ClockLoader
+                color="#fff"
+                loading={isLoading}
+                size={90}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+            />}
+        <div className="grid grid-cols-4 grid-flow-row gap-3">
+            {posts && posts.map(({ id, title, body, userId }) => <div key={id} className="bg-green-500 flex flex-col p-4 gap-6">
+                <span className="text-xl">
+                    {title}
+                </span>
+                <span>
+                    Posted By User: {userId}
+                </span>
+                <span>
+                    {body}
+                </span>
+            </div>)}
+        </div>
+    </div>
+```
+
+<pre>
+
+</pre>
 
 ### The Backend
+
+!!! note "when adding a custom fee the selected fee_id should be null in the transactions body"
 
 #### Authentication
 
